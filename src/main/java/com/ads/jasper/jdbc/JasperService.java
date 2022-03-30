@@ -19,6 +19,22 @@ public class JasperService {
         this.params.put(key, value);
     }
 
+    public void abrirJrxmlComSubReport(String arqMaster, String arquSub, Connection connection) {
+
+        try {
+            JasperReport subReport = compilarJrxml(arquSub);
+            this.params.put("SUB_REPORT_PARAM", subReport);
+
+            JasperReport masterReport = compilarJrxml(arqMaster);
+
+            JasperPrint print = JasperFillManager.fillReport(masterReport, this.params, connection);
+            JasperViewer viewer = new JasperViewer(print);
+            viewer.setVisible(true);
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void abrirPontoJasper(String jasperFile, Connection connection) {
 
         try {
