@@ -7,8 +7,17 @@ import java.util.UUID;
 public class Main {
     public static void main(String[] args) throws SQLException {
        // abrirJrxml("18");
-        exportarParaPDF("02", "C:\\Users\\adson\\Documents\\curso_jasper_relatórios\\" +
-                "jasper=" + UUID.randomUUID() + ".pdf");
+       // exportarParaPDF("02", "C:\\Users\\adson\\Documents\\curso_jasper_relatórios\\" +"jasper=" + UUID.randomUUID() + ".pdf");
+       abrirPontoJasper("09");
+    }
+
+    private static void abrirPontoJasper(String numero) throws SQLException {
+        Connection connection = JdbcConnection.connection();
+        JasperService service = new JasperService();
+        //service.addParams("NIVEL_DESC", "JUNIOR");
+        //service.addParams("UF", "SP");
+        service.abrirPontoJasper("relatorios/jasper/funcionarios-" + numero + ".jasper", connection);
+        connection.close();
     }
 
     private static void exportarParaPDF(String numero, String saida) throws SQLException {
