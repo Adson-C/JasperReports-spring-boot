@@ -3,7 +3,10 @@ package com.ads.jasper.jdbc;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.view.JasperViewer;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,6 +18,21 @@ public class JasperService {
     public void addParams(String key, Object value) {
         this.params.put(key, value);
     }
+
+    public void exportarPDF(String jrxml, Connection connection, String saida) {
+        JasperReport report = compilarJrxml(jrxml);
+        try {
+            OutputStream out = new FileOutputStream(saida);
+
+            JasperPrint print = JasperFillManager.fillReport(report, this.params, connection);
+            JasperExportManager.exportReportToPdfStream(print, out);
+        } catch (JRException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void abrirJasperView(String jrxml, Connection connection) {
         JasperReport report = compilarJrxml(jrxml);
